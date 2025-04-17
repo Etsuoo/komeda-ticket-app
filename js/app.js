@@ -26,18 +26,23 @@ function initApp() {
     // イベントリスナーの設定
     addEventListeners();
 }
+// 保存するキー名を修正（パスに依存しないようにする）
+const STORAGE_KEY = 'komeda-tickets-data';
 
 // ローカルストレージからチケットデータを読み込む
 function loadTicketsFromLocalStorage() {
-    const savedTickets = localStorage.getItem('komeda-tickets');
+    const savedTickets = localStorage.getItem(STORAGE_KEY);
+    console.log('読み込んだデータ:', savedTickets); // デバッグ用
     if (savedTickets) {
         tickets = JSON.parse(savedTickets);
+        console.log('パース後のチケット:', tickets); // デバッグ用
     }
 }
 
 // ローカルストレージにチケットデータを保存
 function saveTicketsToLocalStorage() {
-    localStorage.setItem('komeda-tickets', JSON.stringify(tickets));
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(tickets));
+    console.log('保存したデータ:', JSON.stringify(tickets)); // デバッグ用
 }
 
 // チケット一覧を画面に表示
