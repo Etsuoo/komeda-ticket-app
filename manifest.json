@@ -1,21 +1,21 @@
 {
-    "name": "コメダチケット管理",
-    "short_name": "コメチケ",
-    "start_url": "index.html",
-    "display": "standalone",
-    "background_color": "#5b452d",
-    "theme_color": "#5b452d",
-    "orientation": "portrait",
-    "icons": [
-      {
-        "src": "images/icon-192.png",
-        "sizes": "192x192",
-        "type": "image/png"
-      },
-      {
-        "src": "images/icon-512.png",
-        "sizes": "512x512",
-        "type": "image/png"
-      }
-    ]
-  }
+  "name": "コメダチケット管理",
+  "short_name": "コメチケ",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#5b452d",
+  "theme_color": "#5b452d",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "images/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "images/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

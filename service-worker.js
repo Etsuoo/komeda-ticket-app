@@ -7,6 +7,11 @@ const urlsToCache = [
   '/images/icon-192.png',
   '/images/icon-512.png'
 ];
+// スコープを明示的に設定
+self.addEventListener('install', (event) => {
+  self.scope = '/';
+  // 他の処理...
+});
 
 // インストール時にキャッシュを設定
 self.addEventListener('install', (event) => {
