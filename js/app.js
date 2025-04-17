@@ -33,9 +33,40 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log('プラスボタンが正常に見つかりました');
     }
 
+    // iOS Safari のフォーカス問題を解決するためのハック
+    function fixIOSFocus() {
+        // iOS のホーム画面アプリモードかどうかを検出
+        const isInStandaloneMode = window.navigator.standalone === true;
+        const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+        
+        if (isIOS && isInStandaloneMode) {
+            console.log('iOS スタンドアローンモードを検出');
+            
+            // すべての入力フィールドにタッチイベントリスナーを追加
+            document.querySelectorAll('input').forEach(input => {
+                input.addEventListener('touchend', function(e) {
+                    // デフォルトの動作を停止
+                    e.preventDefault();
+                    
+                    // 明示的にフォーカスする
+                    this.focus();
+                    
+                    // カーソルを最後に移動する
+                    if (this.type !== 'checkbox' && this.type !== 'radio' && this.type !== 'date') {
+                        const len = this.value.length;
+                        this.setSelectionRange(len, len);
+                    }
+                });
+            });
+        }
+    }
+
     // アプリの初期化
     function initApp() {
         console.log('アプリ初期化開始');
+        
+        // iOS フォーカス問題の修正を適用
+        fixIOSFocus();
         
         // ローカルストレージからデータを読み込む
         loadTicketsFromLocalStorage();
@@ -193,7 +224,10 @@ document.addEventListener('DOMContentLoaded', () => {
         // フォームに値を設定
         editTicketIdInput.value = ticket.id;
         storeNameInput.value = ticket.storeName;
-        ticketCountInput.value = ticket.totalCount;
+        
+        // 残り枚数を設定 (変更点: 購入枚数ではなく残り枚数を表示)
+        ticketCountInput.value = ticket.remainingCount;
+        
         ticketPriceInput.value = ticket.price;
         
         if (ticket.purchaseDate) {
@@ -217,11 +251,19 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
         
+        // 購入枚数の表示テキストを変更
+        document.querySelector('label[for="ticket-count"]').textContent = '残り枚数 *';
+        
         // 保存ボタンのテキストを変更
         saveBtn.textContent = '更新する';
         
         // モーダルを表示
         ticketModal.style.display = 'block';
+        
+        // iOS フォーカス問題対策のため、少し遅延してからフォーカスを設定
+        setTimeout(() => {
+            storeNameInput.focus();
+        }, 300);
     }
 
     // 新しいチケットを追加
@@ -246,8 +288,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // チケットを更新
-    function updateTicket(id, storeName, totalCount, price, purchaseDate, expireDate, noExpire) {
-        console.log('チケット更新:', id, storeName, totalCount, price, purchaseDate, expireDate, noExpire);
+    function updateTicket(id, storeName, remainingCount, price, purchaseDate, expireDate, noExpire) {
+        console.log('チケット更新:', id, storeName, remainingCount, price, purchaseDate, expireDate, noExpire);
         
         const index = tickets.findIndex(ticket => ticket.id.toString() === id.toString());
         
@@ -257,14 +299,14 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         
         const oldTicket = tickets[index];
-        const newTotalCount = parseInt(totalCount);
-        const remainingRatio = oldTicket.remainingCount / oldTicket.totalCount;
-        const newRemainingCount = Math.round(newTotalCount * remainingRatio);
+        
+        // 残り枚数を直接更新 (変更点: 比率計算せず直接入力値を使用)
+        const newRemainingCount = parseInt(remainingCount);
         
         tickets[index] = {
             ...oldTicket,
             storeName,
-            totalCount: newTotalCount,
+            // totalCountは変更しない
             remainingCount: newRemainingCount,
             price: parseInt(price),
             purchaseDate: purchaseDate || oldTicket.purchaseDate,
@@ -315,11 +357,19 @@ document.addEventListener('DOMContentLoaded', () => {
             ticketCountInput.value = 9; // デフォルト値を9に変更
             expireDateInput.disabled = false;
             
+            // 購入枚数の表示テキストを元に戻す
+            document.querySelector('label[for="ticket-count"]').textContent = '購入枚数 *';
+            
             // 保存ボタンのテキストを変更
             saveBtn.textContent = '登録する';
             
             validateForm();
             ticketModal.style.display = 'block';
+            
+            // iOS フォーカス問題対策のため、少し遅延してからフォーカスを設定
+            setTimeout(() => {
+                storeNameInput.focus();
+            }, 300);
         });
         
         // 期限なしチェックボックスの変更時
