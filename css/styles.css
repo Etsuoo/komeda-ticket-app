@@ -66,7 +66,8 @@ main {
 
 /* チケットカード */
 .ticket-card {
-    height: 100px;
+    /* 高さ固定を解除 */
+    min-height: 80px;
     background-color: var(--card-color);
     border-radius: 10px;
     padding: 15px;

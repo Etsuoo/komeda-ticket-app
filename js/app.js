@@ -289,7 +289,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // ステッパーの値を更新
     function updateStepperValue(increment) {
-        let value = parseInt(ticketCountInput.value) || 10;
+        let value = parseInt(ticketCountInput.value) || 9; // デフォルト値を9に変更
         value = increment ? value + 1 : Math.max(1, value - 1);
         ticketCountInput.value = value;
         validateForm();
@@ -312,7 +312,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // フォームをリセット
             ticketForm.reset();
             editTicketIdInput.value = '';
-            ticketCountInput.value = 10; // デフォルト値を設定
+            ticketCountInput.value = 9; // デフォルト値を9に変更
             expireDateInput.disabled = false;
             
             // 保存ボタンのテキストを変更
