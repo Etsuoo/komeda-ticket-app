@@ -24,7 +24,6 @@ body {
 .container {
     max-width: 600px;
     margin: 0 auto;
-    padding: 20px;
 }
 
 /* ヘッダー */
@@ -35,8 +34,8 @@ header {
     background-color: var(--primary-color);
     color: white;
     padding: 15px 20px;
-    border-radius: 10px 10px 0 0;
-    margin-bottom: 20px;
+    margin: 0;
+    border-radius: 0;
     position: relative;
 }
 
@@ -59,40 +58,55 @@ h1 {
     justify-content: center;
 }
 
+/* メインコンテンツ */
+main {
+    padding: 15px;
+}
+
 /* チケットカード */
 .ticket-card {
+    height: 100px;
     background-color: var(--card-color);
     border-radius: 10px;
     padding: 15px;
     margin-bottom: 15px;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 .store-name {
     font-size: 16px;
     font-weight: bold;
-    margin-bottom: 10px;
+    margin-bottom: 5px;
 }
 
 .ticket-count {
-    font-size: 30px;
+    font-size: 24px;
     font-weight: bold;
     color: var(--primary-color);
-    margin-bottom: 10px;
+    margin-bottom: 5px;
 }
 
 .ticket-price {
     font-size: 12px;
     color: var(--light-text);
-    margin-bottom: 10px;
+    margin-bottom: 5px;
+}
+
+.expire-date {
+    font-size: 12px;
+    color: var(--light-text);
 }
 
 .card-actions {
     display: flex;
     justify-content: flex-end;
+    gap: 10px;
 }
 
-.use-btn {
+.edit-btn, .use-btn {
     background-color: var(--accent-color);
     color: var(--text-color);
     border: none;
@@ -101,6 +115,10 @@ h1 {
     font-size: 14px;
     font-weight: bold;
     cursor: pointer;
+}
+
+.edit-btn {
+    background-color: #f0f0f0;
 }
 
 /* モーダル */
@@ -150,6 +168,23 @@ input[type="date"] {
     border: 1px solid #ddd;
     border-radius: 5px;
     font-size: 16px;
+}
+
+/* 有効期限のスタイル */
+.expire-date-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.no-expire-check {
+    display: flex;
+    align-items: center;
+    margin-left: 10px;
+}
+
+.no-expire-check input[type="checkbox"] {
+    margin-right: 5px;
 }
 
 /* ステッパー */

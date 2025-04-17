@@ -20,11 +20,13 @@
             <!-- チケットがここに動的に追加されます -->
         </main>
         
-        <!-- チケット追加モーダル -->
-        <div id="add-ticket-modal" class="modal">
+        <!-- チケット追加/編集モーダル -->
+        <div id="ticket-modal" class="modal">
             <div class="modal-content">
-                <h2>チケット登録</h2>
+                <h2 id="modal-title">チケット登録</h2>
                 <form id="ticket-form">
+                    <input type="hidden" id="edit-ticket-id" value="">
+                    
                     <div class="form-group">
                         <label for="store-name">店舗名 *</label>
                         <input type="text" id="store-name" required>
@@ -49,6 +51,17 @@
                         <input type="date" id="purchase-date">
                     </div>
                     
+                    <div class="form-group">
+                        <label for="expire-date">有効期限</label>
+                        <div class="expire-date-container">
+                            <input type="date" id="expire-date">
+                            <div class="no-expire-check">
+                                <input type="checkbox" id="no-expire">
+                                <label for="no-expire">期限なし</label>
+                            </div>
+                        </div>
+                    </div>
+                    
                     <div class="form-actions">
                         <button type="button" id="cancel-btn">キャンセル</button>
                         <button type="submit" id="save-btn">登録する</button>
@@ -60,18 +73,34 @@
 
     <script src="js/app.js"></script>
     <script>
-       // Service Workerの登録 (index.htmlに記述)
-if ('serviceWorker' in navigator) {
-    window.addEventListener('load', function() {
-        navigator.serviceWorker.register('./service-worker.js')
-            .then(function(registration) {
-                console.log('Service Worker登録成功:', registration.scope);
-            })
-            .catch(function(error) {
-                console.log('Service Worker登録失敗:', error);
+        // localStorage動作確認用テスト
+        try {
+            localStorage.setItem('test-key', 'テストデータ');
+            const testData = localStorage.getItem('test-key');
+            console.log('localStorage動作確認:', testData);
+            if (testData === 'テストデータ') {
+                console.log('localStorageは正常に動作しています');
+            } else {
+                console.log('localStorageの読み書きに問題があります');
+            }
+        } catch (error) {
+            console.error('localStorageエラー:', error);
+        }
+        
+        // Service Workerの登録
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function() {
+                navigator.serviceWorker.register('./service-worker.js')
+                    .then(function(registration) {
+                        console.log('Service Worker登録成功:', registration.scope);
+                    })
+                    .catch(function(error) {
+                        console.error('Service Worker登録失敗:', error);
+                    });
             });
-    });
-}
+        } else {
+            console.log('このブラウザはService Workerをサポートしていません');
+        }
     </script>
 </body>
 </html>
